@@ -49,7 +49,7 @@ int main(void)
 
     while(1)
     {
-        if(imu660ra_init_1())
+        if(imu660ra_init_9())
         {
             printf("\r\nIMU660RA init error.");                                 // IMU660RA 初始化失败
         }
@@ -65,11 +65,11 @@ int main(void)
     while(1)
    {
 //        printf("\r\nIMU660RA acc data: x=%5d, y=%5d, z=%5d\r\n", imu660ra_acc_x_1, imu660ra_acc_y_1, imu660ra_acc_z_1);
-//        printf("%d,%d,%d\r\n", imu660ra_gyro_x_1, imu660ra_gyro_y_1, imu660ra_gyro_z_1);
-			printf("%d,%d,%d\n", (int)head.Angle_X, (int)head.Angle_Y, (int)head.Angle_Z);
-		 //printf("\r\n data:  x=%5d\r\n",(int)head.Angle_X_F );
+        printf("%d,%d,%d\r\n", imu660ra_gyro_x_2, imu660ra_gyro_y_2, imu660ra_gyro_z_2);
+		printf("F_BEFORE:%d,%d,%d\n", (int)head.Angle_X, (int)head.Angle_Y, (int)head.Angle_Z);
+		printf("F_AFTER:%d,%d,%d\n",(int)head.Angle_X_F ,(int)head.Angle_Y_F, (int)head.Angle_Z_F);
 //        gpio_toggle_level(LED1);                                                // 翻转 LED 引脚输出电平 控制 LED 亮灭
-        system_delay_ms(5);
+        system_delay_ms(500);
     }
 }
 

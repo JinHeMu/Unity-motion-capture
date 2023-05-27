@@ -19,11 +19,25 @@
 float Q_angle = 0.001;	//陀螺仪噪声协方差
 float Q_bias = 0.003;	//陀螺仪漂移噪声协方差
 float R_angle = 0.03;	//角度测量噪声协方差
-float kal_P[2][2] = {0};
-float kal_k[2] = {0};
-float kal_angle;	//滤波值
-float kal_rate;		//滤波值
-float angle_bias;
+
+
+float kal_P_1[2][2] = {0};
+float kal_k_1[2] = {0};
+float kal_angle_1;	//滤波值
+float kal_rate_1;		//滤波值
+float angle_bias_1;
+
+float kal_P_2[2][2] = {0};
+float kal_k_2[2] = {0};
+float kal_angle_2;	//滤波值
+float kal_rate_2;		//滤波值
+float angle_bias_2;
+
+float kal_P_3[2][2] = {0};
+float kal_k_3[2] = {0};
+float kal_angle_3;	//滤波值
+float kal_rate_3;		//滤波值
+float angle_bias_3;
 
 float cpm_k = 0.85;	//二阶滤波系数
 float cpm_angle;//滤波值
@@ -42,33 +56,90 @@ float yaw_Filter = 0;
 //  @return     kal_angle			 滤波值
 //  Sample usage:
 //-------------------------------------------------------------------------------------------------------------------
-float Kalmen_getAngle(float now_angle, float now_rate,float dt)
+float Kalmen_getAngle1(float now_angle, float now_rate,float dt)
 {
     //预测当前角度
-    kal_angle = kal_angle - Q_bias * dt + now_rate * dt;
+    kal_angle_1 = kal_angle_1 - Q_bias * dt + now_rate * dt;
 
     //预测误差协方差
-    kal_P[0][0] += Q_angle - (kal_P[0][1] -kal_P[1][0]) * dt;
-    kal_P[0][1] -= kal_P[0][1] * dt;
-    kal_P[1][0] -= kal_P[1][0] * dt;
-    kal_P[1][1] += Q_bias;
+    kal_P_1[0][0] += Q_angle - (kal_P_1[0][1] -kal_P_1[1][0]) * dt;
+    kal_P_1[0][1] -= kal_P_1[0][1] * dt;
+    kal_P_1[1][0] -= kal_P_1[1][0] * dt;
+    kal_P_1[1][1] += Q_bias;
 
     //计算卡尔曼增益
-    kal_k[0] = kal_P[0][0]/(kal_P[0][0] + R_angle);
-    kal_k[1] = kal_P[1][0]/(kal_P[0][0] + R_angle);
+    kal_k_1[0] = kal_P_1[0][0]/(kal_P_1[0][0] + R_angle);
+    kal_k_1[1] = kal_P_1[1][0]/(kal_P_1[0][0] + R_angle);
 
     //计算最优估计值
-    kal_angle = kal_angle + kal_k[0] * (now_angle - kal_angle);
-    Q_bias    = Q_bias    + kal_k[1] * (now_angle - kal_angle);
+    kal_angle_1 = kal_angle_1 + kal_k_1[0] * (now_angle - kal_angle_1);
+    Q_bias    = Q_bias    + kal_k_1[1] * (now_angle - kal_angle_1);
 
     //更新协方差矩阵
-    kal_P[0][0] = kal_P[0][0] - kal_k[0] * kal_P[0][0];
-    kal_P[0][1] = kal_P[0][1] - kal_k[0] * kal_P[0][1];
-    kal_P[1][0] = kal_P[1][0] - kal_k[1] * kal_P[0][0];
-    kal_P[1][1] = kal_P[1][1] - kal_k[1] * kal_P[0][1];
+    kal_P_1[0][0] = kal_P_1[0][0] - kal_k_1[0] * kal_P_1[0][0];
+    kal_P_1[0][1] = kal_P_1[0][1] - kal_k_1[0] * kal_P_1[0][1];
+    kal_P_1[1][0] = kal_P_1[1][0] - kal_k_1[1] * kal_P_1[0][0];
+    kal_P_1[1][1] = kal_P_1[1][1] - kal_k_1[1] * kal_P_1[0][1];
 
-    return kal_angle;
+    return kal_angle_1;
 }
+
+float Kalmen_getAngle2(float now_angle, float now_rate,float dt)
+{
+    //预测当前角度
+    kal_angle_2 = kal_angle_2 - Q_bias * dt + now_rate * dt;
+
+    //预测误差协方差
+    kal_P_2[0][0] += Q_angle - (kal_P_2[0][1] -kal_P_2[1][0]) * dt;
+    kal_P_2[0][1] -= kal_P_2[0][1] * dt;
+    kal_P_2[1][0] -= kal_P_2[1][0] * dt;
+    kal_P_2[1][1] += Q_bias;
+
+    //计算卡尔曼增益
+    kal_k_2[0] = kal_P_2[0][0]/(kal_P_2[0][0] + R_angle);
+    kal_k_2[1] = kal_P_2[1][0]/(kal_P_2[0][0] + R_angle);
+
+    //计算最优估计值
+    kal_angle_2 = kal_angle_2 + kal_k_2[0] * (now_angle - kal_angle_2);
+    Q_bias    = Q_bias    + kal_k_2[1] * (now_angle - kal_angle_2);
+
+    //更新协方差矩阵
+    kal_P_2[0][0] = kal_P_2[0][0] - kal_k_2[0] * kal_P_2[0][0];
+    kal_P_2[0][1] = kal_P_2[0][1] - kal_k_2[0] * kal_P_2[0][1];
+    kal_P_2[1][0] = kal_P_2[1][0] - kal_k_2[1] * kal_P_2[0][0];
+    kal_P_2[1][1] = kal_P_2[1][1] - kal_k_2[1] * kal_P_2[0][1];
+
+    return kal_angle_2;
+}
+
+float Kalmen_getAngle3(float now_angle, float now_rate,float dt)
+{
+    //预测当前角度
+    kal_angle_3 = kal_angle_3 - Q_bias * dt + now_rate * dt;
+
+    //预测误差协方差
+    kal_P_3[0][0] += Q_angle - (kal_P_3[0][1] -kal_P_3[1][0]) * dt;
+    kal_P_3[0][1] -= kal_P_3[0][1] * dt;
+    kal_P_3[1][0] -= kal_P_3[1][0] * dt;
+    kal_P_3[1][1] += Q_bias;
+
+    //计算卡尔曼增益
+    kal_k_3[0] = kal_P_3[0][0]/(kal_P_3[0][0] + R_angle);
+    kal_k_3[1] = kal_P_3[1][0]/(kal_P_3[0][0] + R_angle);
+
+    //计算最优估计值
+    kal_angle_3 = kal_angle_3 + kal_k_3[0] * (now_angle - kal_angle_3);
+    Q_bias    = Q_bias    + kal_k_3[1] * (now_angle - kal_angle_3);
+
+    //更新协方差矩阵
+    kal_P_3[0][0] = kal_P_3[0][0] - kal_k_3[0] * kal_P_3[0][0];
+    kal_P_3[0][1] = kal_P_3[0][1] - kal_k_3[0] * kal_P_3[0][1];
+    kal_P_3[1][0] = kal_P_3[1][0] - kal_k_3[1] * kal_P_3[0][0];
+    kal_P_3[1][1] = kal_P_3[1][1] - kal_k_3[1] * kal_P_3[0][1];
+
+    return kal_angle_3;
+}
+
 
 //-------------------------------------------------------------------------------------------------------------------
 //  @brief      二阶互补滤波 | yaw角

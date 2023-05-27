@@ -1,7 +1,7 @@
 /***************************************************
 *
 * @file         Road.h
-* @brief        ´«¸ÐÆ÷Êý¾Ý´¦ÀíÎÄ¼þ
+* @brief        ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
 * @version      v1.0
 * @date         2022/1/18
 *
@@ -9,23 +9,26 @@
 #ifndef _FILTER_h
 #define _FILTER_h
 #include <stdint.h>
-//-----------------------ºê-----------------------//
-#define Filter_N 10	//Á¬Ðø»ñÈ¡10¸öÍÓÂÝÒÇÊýÖµ
-//--------------------È«¾Ö±äÁ¿---------------------//
+//-----------------------ï¿½ï¿½-----------------------//
+#define Filter_N 10	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡10ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+//--------------------È«ï¿½Ö±ï¿½ï¿½ï¿½---------------------//
 extern float yaw_Filter;
-//---------------------½á¹¹Ìå---------------------//
+//---------------------ï¿½á¹¹ï¿½ï¿½---------------------//
 struct RC_Para
 {
-    float temp;  //ÔÝ´æÖµ,´æ´¢RC_baro
-    float value; //ÂË²¨Öµ
-    float RC;    //µÍÍ¨ÂË²¨²ÎÊý
+    float temp;  //ï¿½Ý´ï¿½Öµ,ï¿½æ´¢RC_baro
+    float value; //ï¿½Ë²ï¿½Öµ
+    float RC;    //ï¿½ï¿½Í¨ï¿½Ë²ï¿½ï¿½ï¿½ï¿½ï¿½
 };
 typedef struct RC_Para *RC_Filter_pt;
 
 
 
 /***************************************************************************/
-float Kalmen_getAngle(float now_angle, float now_rate,float dt);
+float Kalmen_getAngle1(float now_angle, float now_rate,float dt);
+float Kalmen_getAngle2(float now_angle, float now_rate,float dt);
+float Kalmen_getAngle3(float now_angle, float now_rate,float dt);
+
 float complementary_filter2(float now_angle, float now_rate, float dt);
 float Movingaverage_filter(float value,float Filter_buff[]);
 float RCFilter(float value,RC_Filter_pt Filter);
