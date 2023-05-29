@@ -1,4 +1,7 @@
-Load "c:\\Users\\49075\\Desktop\\Unity motion capture\\Unity-motion-capture\\1064\\E05_04_imu660ra_demo\\mdk\\Objects\\rt1064.axf" 
-Erase Done.Programming Done.Verify OK.Application running ...
-RDDI-DAP Error
-Flash Load finished at 19:23:07
+*** Using Compiler 'V6.18', folder: 'D:\Keil\ARM\ARMCLANG\Bin'
+Build target 'nor_sdram_zf_dtcm'
+compiling main.c...
+linking...
+Program Size: Code=43664 RO-data=13324 RW-data=164 ZI-data=11412  
+".\Objects\rt1064.axf" - 0 Error(s), 0 Warning(s).
+Build Time Elapsed:  00:00:02
