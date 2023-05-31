@@ -42,8 +42,8 @@ void Value_process(float imu660ra_gyro_x, float imu660ra_gyro_y, float imu660ra_
 	
 
 	
-	Object->Angle_X += (Object_raw->gyro_x / 3.33);
-	Object->Angle_Y += (Object_raw->gyro_y / 3.33);
+	Object->Angle_X += (Object_raw->gyro_y / 3.33);
+	Object->Angle_Y += (Object_raw->gyro_x / 3.33);
 	Object->Angle_Z += (Object_raw->gyro_z / 3.33);
 	Object->Angle_X_F = Kalmen_getAngle1(Object->Angle_X, Object_raw->gyro_x, 0.005);
 	Object->Angle_Y_F = Kalmen_getAngle2(Object->Angle_Y, Object_raw->gyro_y, 0.005);
@@ -65,16 +65,18 @@ void Value_process(float imu660ra_gyro_x, float imu660ra_gyro_y, float imu660ra_
 void Get_Value(void)
 {
 	
-//	imu660ra_get_acc_1();                                                         // 获取 IMU660RA 的加速度测量数值
-//  imu660ra_get_gyro_1();                                                        // 获取 IMU660RA 的角速度测量数值
+	imu660ra_get_acc_1();                                                         // 获取 IMU660RA 的加速度测量数值
+  imu660ra_get_gyro_1();                                                        // 获取 IMU660RA 的角速度测量数值
 //	Value_process(imu660ra_gyro_x_1, imu660ra_gyro_y_1, imu660ra_gyro_z_1, &head, &head_Raw);
 	
-	imu660ra_get_acc_9();                                                         
-  imu660ra_get_gyro_9();
+	imu660ra_get_acc_2();                                                         
+  imu660ra_get_gyro_2();
 	
-	imu963ra_get_gyro();
-	imu963ra_get_acc();
+	imu660ra_get_acc_3();                                                         
+  imu660ra_get_gyro_3();
 
-	Value_process(imu660ra_gyro_x_9, imu660ra_gyro_y_9, imu660ra_gyro_z_9, &head, &head_Raw);
-	Value_process(imu963ra_gyro_x, imu963ra_gyro_y, imu963ra_gyro_z, &upperarm_l, &upperarm_l_Raw);
+	Value_process(imu660ra_gyro_x_1, imu660ra_gyro_y_1, imu660ra_gyro_z_1, &head, &head_Raw);
+	Value_process(imu660ra_gyro_x_2, imu660ra_gyro_y_2, imu660ra_gyro_z_2, &upperarm_l, &upperarm_l_Raw);
+	Value_process(imu660ra_gyro_x_3, imu660ra_gyro_y_3, imu660ra_gyro_z_3, &lowerarm_l, &lowerarm_l_Raw);
+	//Value_process(imu963ra_gyro_x, imu963ra_gyro_y, imu963ra_gyro_z, &upperarm_l, &upperarm_l_Raw);
 }

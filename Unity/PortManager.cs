@@ -9,28 +9,45 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.XR;
 
-
+/*Pose head = new();
+Pose spine = new();
+Pose thigh_l = new();
+Pose thigh_r = new();
+Pose calf_l = new();
+Pose calf_r = new();
+Pose upperarm_l = new();
+Pose upperarm_r = new();
+Pose lowerarm_l = new();
+Pose lowerarm_r = new();*/
 
 
 public class PortManager : MonoBehaviour
 {
     private SerialPort sp;
 
-
-
-    public Transform cubeTransform;
+    public Transform headTransform;
+    public Transform spineTransform;
+    public Transform thigh_lTransform;
+    public Transform thigh_rTransform;
+    public Transform calf_lTransform;
+    public Transform calf_rTransform;
+    public Transform upperarm_lTransform;
+    public Transform upperarm_rTransform;
+    public Transform lowerarm_lTransform;
+    public Transform lowerarm_rTransform;
 
     //public AnotherScript anotherScript;
 
     //Transform transform = anotherScript.cubeTransform;
 
+    class Pose
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Z { get; set; }
+    }
 
 
-
-
-    public int x;
-    public int y;
-    public int z;
 
 
 
@@ -209,11 +226,11 @@ public class PortManager : MonoBehaviour
                     {
                         Debug.Log(ex.Message);
                     }
-                    }
                 }
             }
-            Thread.Sleep(100);
+            Thread.Sleep(200);
         }
+
     }
     /// <summary>
     /// 数据处理
@@ -221,10 +238,76 @@ public class PortManager : MonoBehaviour
     /// <param name="data">字节数组</param>
     public void DataProcessing(byte[] data)
     {
+        Pose head = new();
+        Pose spine = new();
+        Pose thigh_l = new();
+        Pose thigh_r = new();
+        Pose calf_l = new();
+        Pose calf_r = new();
+        Pose upperarm_l = new();
+        Pose upperarm_r = new();
+        Pose lowerarm_l = new();
+        Pose lowerarm_r = new();
 
-        string str = System.Text.Encoding.UTF8.GetString(data);
-        Debug.Log(str);
 
+
+        string input = System.Text.Encoding.UTF8.GetString(data);
+        MatchCollection matches = Regex.Matches(input, @"-?\d+");
+        //Debug.Log(input);
+        // 使用迭代索引来访问匹配结果，并将坐标赋值给对应的骨骼对象的属性
+        int index = 0;
+
+        head.X = int.Parse(matches[index++].Value);
+        head.Y = int.Parse(matches[index++].Value);
+        head.Z = int.Parse(matches[index++].Value);
+
+        spine.X = int.Parse(matches[index++].Value);
+        spine.Y = int.Parse(matches[index++].Value);
+        spine.Z = int.Parse(matches[index++].Value);
+
+        thigh_l.X = int.Parse(matches[index++].Value);
+        thigh_l.Y = int.Parse(matches[index++].Value);
+        thigh_l.Z = int.Parse(matches[index++].Value);
+
+        thigh_r.X = int.Parse(matches[index++].Value);
+        thigh_r.Y = int.Parse(matches[index++].Value);
+        thigh_r.Z = int.Parse(matches[index++].Value);
+
+        calf_l.X = int.Parse(matches[index++].Value);
+        calf_l.Y = int.Parse(matches[index++].Value);
+        calf_l.Z = int.Parse(matches[index++].Value);
+
+        calf_r.X = int.Parse(matches[index++].Value);
+        calf_r.Y = int.Parse(matches[index++].Value);
+        calf_r.Z = int.Parse(matches[index++].Value);
+
+        upperarm_l.X = int.Parse(matches[index++].Value);
+        upperarm_l.Y = int.Parse(matches[index++].Value);
+        upperarm_l.Z = int.Parse(matches[index++].Value);
+
+        upperarm_r.X = int.Parse(matches[index++].Value);
+        upperarm_r.Y = int.Parse(matches[index++].Value);
+        upperarm_r.Z = int.Parse(matches[index++].Value);
+
+        lowerarm_l.X = int.Parse(matches[index++].Value);
+        lowerarm_l.Y = int.Parse(matches[index++].Value);
+        lowerarm_l.Z = int.Parse(matches[index++].Value);
+
+        lowerarm_r.X = int.Parse(matches[index++].Value);
+        lowerarm_r.Y = int.Parse(matches[index++].Value);
+        lowerarm_r.Z = int.Parse(matches[index++].Value);
+
+        // 输出骨骼对象的坐标
+        Debug.Log("Head: " + head.X + ", " + head.Y + ", " + head.Z);
+        Debug.Log("Spine: " + spine.X + ", " + spine.Y + ", " + spine.Z);
+        Debug.Log("Thigh Left: " + thigh_l.X + ", " + thigh_l.Y + ", " + thigh_l.Z);
+        Debug.Log("Thigh Right: " + thigh_r.X + ", " + thigh_r.Y + ", " + thigh_r.Z);
+        Debug.Log("Calf Left: " + calf_l.X + ", " + calf_l.Y + ", " + calf_l.Z);
+        Debug.Log("Calf Right: " + calf_r.X + ", " + calf_r.Y + ", " + calf_r.Z);
+        Debug.Log("Upper Arm Left: " + upperarm_l.X + ", " + upperarm_l.Y + ", " + upperarm_l.Z);
+        Debug.Log("Upper Arm Right: " + upperarm_r.X + ", " + upperarm_r.Y + ", " + upperarm_r.Z);
+        Debug.Log("Lower Arm Left: " + lowerarm_l.X + ", " + lowerarm_l.Y + ", " + lowerarm_l.Z);
+        Debug.Log("Lower Arm Right: " + lowerarm_r.X + ", " + lowerarm_r.Y + ", " + lowerarm_r.Z);
 
         /*string pattern = @"x:(-?\d+),y:(-?\d+),z:(-?\d+)";
         Match match = Regex.Match(str, pattern);
@@ -234,7 +317,7 @@ public class PortManager : MonoBehaviour
              x = int.Parse(match.Groups[1].Value);
              y = int.Parse(match.Groups[2].Value);
              z = int.Parse(match.Groups[3].Value);
-             
+
 
 
 
@@ -245,7 +328,7 @@ public class PortManager : MonoBehaviour
         {
             Debug.Log("字符串中没有符合格式要求的子串");
         }*/
-        
+
     }
 
     void Start()
@@ -257,7 +340,7 @@ public class PortManager : MonoBehaviour
 
     void Update()
     {
-        cubeTransform.localRotation = Quaternion.Euler((float)-y, (float)x, (float)z);
+        //cubeTransform.localRotation = Quaternion.Euler((float)-y, (float)x, (float)z);
     }
     #endregion
 }
